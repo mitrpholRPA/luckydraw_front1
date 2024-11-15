@@ -88,7 +88,7 @@ const LuckyDrawPage = (props_json) => {
                 
           </div>
           <div style={styles.footer}>
-            <button style={styles.button} onClick={handleLuckyDraw}>
+            <button style={styles.button} onClick={handleLuckyDraw} loading ={loading}>
                 Draw
             </button>
           </div>
