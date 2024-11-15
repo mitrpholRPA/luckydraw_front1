@@ -63,13 +63,22 @@ const LuckyDrawPage = (props_json) => {
       <div style={styles.header}>Lucky Draw</div> */}
       {isDraw ? (
         isReceive ? (
-          <div style={styles.body}>
-            <h2>Congratulations!</h2>
-            <p>Your Prize: <strong>{prize}</strong></p>
+          <div style={styles.container} >
+          <div style={styles.header}>Lucky Draw</div>
+            <div style={styles.body}>
+              <h2>Congratulations!</h2>
+              <p>Your Prize: <strong>{prize}</strong></p>
+            </div>
           </div>
+        
+
         ) : (
-          <div style={styles.body}>
-            <h2>รอลุ้นในงาน</h2>
+          <div style={styles.container} >
+          <div style={styles.header}>Lucky Draw</div>
+          
+            <div style={styles.body}>
+                <p>สุ่มแล้ว รอจับฉลากภายในงาน </p>
+            </div>
           </div>
         )
       ) : (
@@ -80,7 +89,7 @@ const LuckyDrawPage = (props_json) => {
           </div>
           <div style={styles.footer}>
             <button style={styles.button} onClick={handleLuckyDraw}>
-              {loading ? 'Drawing...' : 'Draw'}
+                Draw
             </button>
           </div>
         </div>
@@ -97,70 +106,58 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: '100vh',
-    background: 'linear-gradient(to bottom, #FF6A00, #FFCB00)',   /* ฟ้าอ่อนถึงฟ้าเข้ม */
+    background: 'linear-gradient(to bottom, #005bea,#00c6fb)', 
     padding: '5vw',
     textAlign: 'center',
   },
   header: {
-    fontSize: '10vw',  // ขนาดตัวอักษรในส่วน header
-    fontWeight :'bold',
-    padding: '2vh 0', // ช่องว่างด้านบนและล่าง
+    fontSize: 'clamp(40px, 8vw, 80px)',  // ขนาดตัวอักษร responsive
+    fontWeight: 'bold',
+    padding: '2vh 0',
   },
   body: {
     flexGrow: 1,  // ทำให้ body ขยายพื้นที่ที่เหลือ
     display: 'flex',
+    width: '65vw', // กำหนดความกว้างให้เล็กลง
+    maxWidth: '450px', // ขนาดกว้างสูงสุด
+    height: '25vh', // ลดความสูงลง
+    maxHeight: '400px', // ขนาดสูงสุด
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    border: '2px',  // เพิ่มเส้นขอบ
-    borderRadius: '10px',  // เพิ่มความโค้งให้ขอบ
-    padding: '20px',  // เพิ่มช่องว่างภายใน body
+    border: '5px',  // เพิ่มเส้นขอบ
+    borderRadius: '15px',  // เพิ่มความโค้งให้ขอบ
+    padding: '10px',  // เพิ่มช่องว่างภายใน body
     boxShadow: '0 8px 10px rgba(0, 0, 0, 0.1)',  // เพิ่มเงาให้ดูมีมิติ
     backgroundImage :'url(https://th.lovepik.com/image-649899113/floral-label-text-box-decoration.html)',
-    margin : '20px',
-    fontSize: '5vw', 
-  },
-  prizeBox: {
-    position: 'relative',
-    textAlign: 'center',
-    padding: '2vw',
-    border: '0.5vw solid #FF8C00',
-    borderRadius: '2vw',
-    backgroundColor: '#FFF7E6',
-    boxShadow: '0 2vw 4vw rgba(0, 0, 0, 0.2)',
-    width: '80vw',
-    maxWidth: '400px',
-    animation: 'fadeIn 1s',
-    marginTop: '5vh',
-  },
-  waitBox: {
-    padding: '4vw',
-    backgroundColor: '#FFE4B2',
-    borderRadius: '2vw',
-    boxShadow: '0 2vw 4vw rgba(0, 0, 0, 0.2)',
-    width: '80vw',
-    maxWidth: '400px',
-    marginTop: '10vh',
-  },
-  button: {
-    padding: '4vw 8vw',
-    fontSize: '5vw',
-    color: '#FFF',
-    backgroundColor: '#FF4500',
-    border: 'none',
-    borderRadius: '2vw',
-    cursor: 'pointer',
-    width: '80vw',
-    maxWidth: '500px',
-    transition: 'transform 0.3s ease',
-    display: 'block',
-    margin: '20px auto',
-  },
+    backgroundColor :'#fff',
+    margin : 'auto',
+    fontSize: '3vw',
+  }, 
+  
   footer: {
     padding: '2vh 0',
     fontSize: '3vw',
     color: '#FFFFFF',
+    marginTop: 'auto', // ทำให้ footer อยู่ที่ด้านล่างสุด
   },
+
+
+  button: {
+    padding: 'clamp(10px, 4vw, 20px) clamp(20px, 8vw, 40px)',  // ปรับ padding ให้ responsive
+    fontSize: 'clamp(14px, 5vw, 24px)',  // ขนาดตัวอักษร responsive
+    color: '#FFF',
+    backgroundColor: '#FF4500',
+    border: 'none',
+    borderRadius: 'clamp(5px, 2vw, 15px)',  // ความโค้งขอบ responsive
+    cursor: 'pointer',
+    width: 'clamp(150px, 80vw, 500px)',  // กำหนดความกว้างขั้นต่ำ 150px, สูงสุด 500px
+    transition: 'transform 0.3s ease',
+    display: 'block',
+    margin: '20px auto',
+  }
+  ,
+ 
   '@keyframes fadeIn': {
     '0%': { opacity: 0 },
     '100%': { opacity: 1 },
