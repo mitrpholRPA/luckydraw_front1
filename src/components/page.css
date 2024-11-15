@@ -1,0 +1,98 @@
+/* Background Effect */
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top right, #ff6600, #ffcc66);
+    overflow: hidden;
+  }
+  
+  /* Sparkle Effect */
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  
+  /* Container Style */
+  .container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #fff;
+  }
+  
+  /* Header Style */
+  h1 {
+    color: #ffcc00;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Gift Box Style */
+  .gift-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .gift {
+    width: 150px;
+    height: 150px;
+    background-image: url('https://example.com/gift-box.png');
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 20px;
+  }
+  
+  .gift.shake {
+    animation: shake 0.5s;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+  }
+  
+  /* Draw Button Style */
+  .draw-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    background-color: #ff6600;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+  }
+  
+  .draw-button:hover {
+    transform: scale(1.05);
+    background-color: #ff4500;
+  }
+  
+  /* Prize Result Style */
+  .prize-result {
+    text-align: center;
+    padding: 20px;
+    background: #fffbcc;
+    border-radius: 15px;
+    border: 2px solid #ffd700;
+  }
+  
+  /* Footer Style */
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: #ff6600;
+    color: #fff;
+  }
+  

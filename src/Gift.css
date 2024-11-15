@@ -1,0 +1,27 @@
+.gift-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.gift-box {
+    font-size: 50px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.gift-box.opening {
+    transform: rotateX(90deg) scale(1.1);
+}
+
+.gift-image {
+    width: 150px;
+    height: 150px;
+    opacity: 1;
+    transition: opacity 5s ease; /* ทำให้ภาพจางลงใน 5 วินาที */
+}
+
+.gift-image.fade-out {
+    opacity: 0; /* เมื่อใช้คลาสนี้ opacity จะลดลงเป็น 0 */
+}
