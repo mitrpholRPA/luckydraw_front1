@@ -61,7 +61,7 @@ const RegisterPage = () => {
       setResponseMessage('An error occurred during registration.');
     } finally {
       setLoading(false);
-      
+      console.log(responseMessage)
     }
   };
 
