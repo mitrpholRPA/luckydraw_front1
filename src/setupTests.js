@@ -3,13 +3,14 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
-// setupTests.js
-global.matchMedia = global.matchMedia || function() {
-    return {
-      matches: false,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-    };
-  };
+
+// Mock matchMedia before tests if needed
+global.matchMedia = jest.fn().mockImplementation(() => ({
+  matches: false,
+  addListener: jest.fn(),
+  removeListener: jest.fn(),
+}));
+
+// Add any other setup or mocking code here if required
+
   
