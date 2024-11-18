@@ -15,7 +15,6 @@ const RegisterPage = () => {
 
   // Redirect if cookie data exists
   useEffect(() => {
-    document.title = "Lucky Draw";
     if (cookies.luckyDrawData) {
       navigate('/luckydraw', { state: { jsonData: cookies.luckyDrawData } });
     }
