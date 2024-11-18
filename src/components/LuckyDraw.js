@@ -17,6 +17,7 @@ const LuckyDrawPage = () => {
 
   useEffect(() => {
     // Initialize state with data from cookies if available
+    document.title = "Lucky Draw";
     if (cookies.luckyDrawData) {
       setJsonData(cookies.luckyDrawData);
     }
