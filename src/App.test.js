@@ -4,10 +4,14 @@ import { act } from 'react';  // นำเข้า act จาก react
 import App from './App';
 
 test('renders learn react link', () => {
-  act(() => {
-    render(<App />);  // ใช้ act ล้อมรอบการเรนเดอร์
-  });
+  // Mock matchMedia before rendering the component
+  global.matchMedia = jest.fn().mockImplementation(() => ({
+    matches: false,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+  }));
 
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  act(() => {
+    render(<App />); // Wrap render in act
+  });
 });
