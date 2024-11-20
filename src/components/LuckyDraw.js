@@ -23,9 +23,9 @@ const LuckyDrawPage = () => {
 
     // Set states based on the current jsonData
     if (jsonData) {
-      setIsDraw(jsonData.isLuckydraw === 'true');
-      setPrize(jsonData.Gift || '');
-      setIsReceive(jsonData.isReceive === 'true');
+      setIsDraw(jsonData.isluckydraw === 'true');
+      setPrize(jsonData.gift_name || '');
+      setIsReceive(jsonData.isreceive === 'true');
       
     }
   }, [cookies, jsonData]);
@@ -46,11 +46,12 @@ const LuckyDrawPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data)
         const { status, Gift } = data;
         const updatedData = {
           ...jsonData,
-          isLuckydraw: 'true',
-          isReceive: status === 'true' ? 'true' : 'false',
+          isluckydraw: 'true',
+          isreceive: status === 'true' ? 'true' : 'false',
           Gift,
         };
 

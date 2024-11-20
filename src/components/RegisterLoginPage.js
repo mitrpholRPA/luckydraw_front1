@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 const webhook_url = 'https://prod-52.southeastasia.logic.azure.com:443/workflows/9a2c54722a8a4da7814aa226985be8e3/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qn9byypFPR8Vehn9UAcJgMPyOrLabRmGd3VTPw88aCg';
-
+const api_register = "http://localhost:3000/api/v1/register"
 const RegisterPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -29,22 +29,23 @@ const RegisterPage = () => {
 
   const handleRegister = async (employeeID) => {
     setLoading(true);
+    console.log(employeeID)
     const requestData = {
-      employeeID: employeeID,
-      email: '',
+      "employeeID": employeeID
     };
-
+    console.log(requestData)
     try {
-      const response = await fetch(webhook_url, {
+      const response = await fetch(api_register, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // เพิ่ม Content-Type header
         },
         body: JSON.stringify(requestData),
       });
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data)
         setResponseMessage(data.message || 'Registration successful');
         
         // Save data to cookies
@@ -105,7 +106,7 @@ const RegisterPage = () => {
             <Form.Item
               label={<span style={{ fontSize: 'calc(1em + 0.5vw)' }}>Employee ID</span>}
               name="employeeID"
-              rules={[{ required: true, message: 'Please enter your Employee ID!' }]}
+              rules={[{ required: true, message: 'Please enter your Employee ID!!!!!!!' }]}
             >
               <Input placeholder="Enter your Employee ID" style={{ fontSize: 'calc(1em + 0.3vw)' }} />
             </Form.Item>
