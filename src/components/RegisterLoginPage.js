@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 const webhook_url = 'https://prod-52.southeastasia.logic.azure.com:443/workflows/9a2c54722a8a4da7814aa226985be8e3/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qn9byypFPR8Vehn9UAcJgMPyOrLabRmGd3VTPw88aCg';
-const api_register = "http://localhost:3000/api/v1/register"
+// const api_register = "http://localhost:3000/api/v1/register"
 const RegisterPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -29,13 +29,12 @@ const RegisterPage = () => {
 
   const handleRegister = async (employeeID) => {
     setLoading(true);
-    console.log(employeeID)
     const requestData = {
       "employeeID": employeeID
     };
     console.log(requestData)
     try {
-      const response = await fetch(api_register, {
+      const response = await fetch(webhook_url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // เพิ่ม Content-Type header
@@ -45,12 +44,16 @@ const RegisterPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
         setResponseMessage(data.message || 'Registration successful');
-        
-        // Save data to cookies
-        setCookie('luckyDrawData', data, { path: '/', maxAge: 3600 }); // Cookie expires in 1 hour
 
+         // ตั้งค่า Cookie โดยใช้ expires
+        const expiryDate = new Date();
+        expiryDate.setHours(expiryDate.getHours() + 4);
+        setCookie('luckyDrawData', JSON.stringify(data), {
+          path: '/',
+          expires: expiryDate, // ใช้ expires ที่เป็น Date object
+        });
+        
         // Navigate to LuckyDraw page
         navigate('/luckydraw', { state: { jsonData: data } });
       } else {
