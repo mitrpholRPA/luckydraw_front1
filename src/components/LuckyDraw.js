@@ -14,7 +14,8 @@ const LuckyDrawPage = () => {
   const [isDraw, setIsDraw] = useState(false);
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
-  const api_draw = 'http://localhost:3000/api/v1/draw';
+
+  const api_draw = 'https://newyear-appback1.azurewebsites.net/api/v1/draw';
 
   // Initialize state from cookies
   useEffect(() => {
@@ -28,8 +29,6 @@ const LuckyDrawPage = () => {
       console.log(jsonData.isluckydraw)
       setPrize(jsonData.gift_details|| '');
       setHasLuckyDraw(jsonData.has_lucky_draw);
-      // Test Case Manager or After CutOffTime
-      // setHasLuckyDraw(false)
     }
   }, [cookies , jsonData]);
 

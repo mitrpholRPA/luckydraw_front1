@@ -3,15 +3,14 @@ import { Form, Input, Button, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-// const webhook_url = 'https://prod-52.southeastasia.logic.azure.com:443/workflows/9a2c54722a8a4da7814aa226985be8e3/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qn9byypFPR8Vehn9UAcJgMPyOrLabRmGd3VTPw88aCg';
-const api_register = "http://localhost:3000/api/v1/register"
+const api_register = 'https://newyear-appback1.azurewebsites.net/api/v1/register'
 const RegisterPage = () => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [statusSubmit, setStatus] = useState(true);
   const [responseMessage, setResponseMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [cookies, setCookie] = useCookies(['luckyDrawData']);
-  const navigate = useNavigate();
 
   // Redirect if cookie data exists
   useEffect(() => {
@@ -30,14 +29,15 @@ const RegisterPage = () => {
   const handleRegister = async (employeeID) => {
     setLoading(true);
     const requestData = {
-      "employeeID": employeeID
+      employeeID: employeeID,
+      email: '',
     };
-    console.log(requestData)
+    console.log(api_register)
     try {
       const response = await fetch(api_register, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // เพิ่ม Content-Type header
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestData),
       });
@@ -45,15 +45,10 @@ const RegisterPage = () => {
       if (response.ok) {
         const data = await response.json();
         setResponseMessage(data.message || 'Registration successful');
+        console.log(data)
+        // Save data to cookies
+        setCookie('luckyDrawData', data, { path: '/', maxAge: 3600 }); // Cookie expires in 1 hour
 
-         // ตั้งค่า Cookie โดยใช้ expires
-        const expiryDate = new Date();
-        expiryDate.setHours(expiryDate.getHours() + 4);
-        setCookie('luckyDrawData', JSON.stringify(data), {
-          path: '/',
-          expires: expiryDate, // ใช้ expires ที่เป็น Date object
-        });
-        
         // Navigate to LuckyDraw page
         navigate('/luckydraw', { state: { jsonData: data } });
       } else {
@@ -109,7 +104,7 @@ const RegisterPage = () => {
             <Form.Item
               label={<span style={{ fontSize: 'calc(1em + 0.5vw)' }}>Employee ID</span>}
               name="employeeID"
-              rules={[{ required: true, message: 'Please enter your Employee ID!!!!!!!' }]}
+              rules={[{ required: true, message: 'Please enter your Employee ID!' }]}
             >
               <Input placeholder="Enter your Employee ID" style={{ fontSize: 'calc(1em + 0.3vw)' }} />
             </Form.Item>
