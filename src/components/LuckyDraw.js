@@ -174,7 +174,7 @@ const styles = {
     marginBottom: '10px',
   },
   prize: {
-    fontSize: '6vw',
+    fontSize: '6.2vw',
     fontWeight: 'bold',
     margin: '20px 0',
     color: '#f6b93b',
@@ -184,7 +184,7 @@ const styles = {
     fontSize: '8vw',
     fontWeight: 'bold',
     margin: '20px 0',
-    // color: '#f6b93b',
+    color: '#f6b93b',
     textShadow: '2px 2px 8px rgba(0,0,0,0.3)',
   },
   button: {
