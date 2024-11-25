@@ -1,23 +1,87 @@
-import React, { useState } from 'react';
-import { Row, Col, Button, Spin } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { Row , Col, Button, Spin } from 'antd';
 
-const Display_Draw = ({name , prize}) => {
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [result, setResult] = useState('');
+const LuckyDrawPage = () => {
+  const location = useLocation();
+  const { jsonData: locationJsonData } = location.state || {}; // Data from navigation
+  const [cookies, setCookie] = useCookies(['luckyDrawData']); // Access cookies
 
+  // State variables
+  const [ jsonData, setJsonData] = useState(locationJsonData || cookies.luckyDrawData || {});
+  const [ isDraw, setIsDraw] = useState(false);
+  const [ isReceive, setIsReceive] = useState(false);
+  const [ prize, setPrize] = useState('');
   const prizes = ['รางวัลใหญ่', 'รางวัลพิเศษ', 'รางวัลปลอบใจ']; // ตัวอย่างรางวัล
 
-  const handleDraw = () => {
-    setIsDrawing(true);
-    setResult(''); // ล้างผลลัพธ์เดิม
+  const api_draw = 'http://localhost:3000/api/v1/draw';
 
-    // เริ่มหมุน 3 วิ แล้วสุ่มผลลัพธ์
-    setTimeout(() => {
-      const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
-      setResult(randomPrize);
-      setIsDrawing(false);
-    }, 3000); // หมุน 3 วินาที
-  };
+  useEffect(() => {
+      // Initialize state with data from cookies if available
+      if (cookies.luckyDrawData) {
+        setJsonData(cookies.luckyDrawData);
+      }
+  
+      // Set states based on the current jsonData
+      if (jsonData) {
+        setIsDraw(jsonData.isluckydraw === 'true');
+        setPrize(jsonData.gift_name || '');
+        setIsReceive(jsonData.isreceive === 'true')
+      }
+    }, [cookies, jsonData]);
+
+    const handleLuckyDraw = async () => {
+      const requestData = {
+        employeeID: jsonData.id,
+        email: '',
+      };
+    
+      try {
+        const response = await fetch(api_draw, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestData),
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          const { status, Gift } = data;
+          const updatedData = {
+            ...jsonData,
+            isluckydraw: 'true',
+            isreceive: status === 'true' ? 'true' : 'false',
+            gift_name: Gift,
+            expiry: new Date(Date.now() + 3600 * 1000).toISOString(), // ตั้งวันหมดอายุใหม่ (1 ชั่วโมง)
+          };
+    
+          // อัปเดต Cookie และ State
+          setJsonData(updatedData);
+          setCookie('luckyDrawData', updatedData, { path: '/', maxAge: 3600 }); // เก็บ Cookie ใหม่
+    
+          // เริ่มหมุน
+          setIsDraw(true);
+    
+          // ป้องกันไม่ให้กดปุ่มซ้ำ
+          setTimeout(() => {
+            // สุ่มรางวัล
+            const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
+            setIsDraw(false); // หยุดหมุน
+            setPrize(randomPrize); // แสดงรางวัลที่สุ่มได้
+            setIsReceive(status === 'true'); // แสดงว่าได้รับรางวัลหรือไม่
+          }, 3000); // หมุน 3 วินาที
+        } else {
+          console.error('Error:', await response.text());
+          setPrize('รอลุ้นในงาน');
+        }
+      } catch (error) {
+        console.error('Request failed:', error);
+        setPrize('รอลุ้นในงาน');
+      }
+    };
+    
+    
+
 
   return (
     <div
@@ -64,9 +128,9 @@ const Display_Draw = ({name , prize}) => {
             }}
       >
         <Col span={24}>
-          {isDrawing ? (
+          {isDraw ? (
             <Spin size="large" tip="กำลังหมุน..." />
-          ) : result ? (
+          ) : isReceive ? (
             <>
                 <h2
                     style={{
@@ -75,7 +139,7 @@ const Display_Draw = ({name , prize}) => {
                       marginBottom: '10px',
                     }}
                   >
-                    {name}
+                    {jsonData}
                   </h2>
                   <h2
                     style={{
@@ -95,7 +159,7 @@ const Display_Draw = ({name , prize}) => {
                       textShadow: '2px 2px 8px rgba(0,0,0,0.3)',
                     }}
                   >
-                    ✨ ชื่อรางวัลที่ได้รับ ✨
+                    ✨ {prize} ✨
                   </h1>
             </>
           ) : (
@@ -114,7 +178,7 @@ const Display_Draw = ({name , prize}) => {
                     borderRadius: '8px', // มุมปุ่มโค้งมน
                     transition: 'background-color 0.3s ease', // เพิ่มเอฟเฟกต์เปลี่ยนสี
                 }}
-                onClick={handleDraw}
+                onClick={handleLuckyDraw}
                 onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#e58e26')} // เปลี่ยนสีเมื่อ Hover
                 onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#f6b93b')} // คืนสีเดิมเมื่อออกจาก Hover
                 >
@@ -150,4 +214,4 @@ const Display_Draw = ({name , prize}) => {
   );
 };
 
-export default Display_Draw;
+export default LuckyDrawPage;

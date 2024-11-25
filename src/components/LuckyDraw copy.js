@@ -77,21 +77,8 @@ const LuckyDrawPage = () => {
     <>
       {isDraw ? (
         isReceive ? (
-          // <div style={styles.container}>
-          //   <div style={styles.header}>Lucky Draw</div>
-          //   <div style={styles.body}>
-          //     <h2>Congratulations!</h2>
-          //     <p>Your Prize: <strong>{prize}</strong></p>
-          //   </div>
-          // </div>
           <Display_Draw/>
         ) : (
-          // <div style={styles.container}>
-          //   <div style={styles.header}>Lucky Draw</div>
-          //   <div style={styles.body}>
-          //     <p>สุ่มแล้ว รอจับฉลากภายในงาน</p>
-          //   </div>
-          // </div>
           <Display_Gift/>
         )
       ) : (

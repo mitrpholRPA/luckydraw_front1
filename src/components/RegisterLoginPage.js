@@ -3,15 +3,15 @@ import { Form, Input, Button, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-const webhook_url = 'https://prod-52.southeastasia.logic.azure.com:443/workflows/9a2c54722a8a4da7814aa226985be8e3/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qn9byypFPR8Vehn9UAcJgMPyOrLabRmGd3VTPw88aCg';
-// const api_register = "http://localhost:3000/api/v1/register"
+// const webhook_url = 'https://prod-52.southeastasia.logic.azure.com:443/workflows/9a2c54722a8a4da7814aa226985be8e3/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qn9byypFPR8Vehn9UAcJgMPyOrLabRmGd3VTPw88aCg';
+const api_register = "http://localhost:3000/api/v1/register"
 const RegisterPage = () => {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const [statusSubmit, setStatus] = useState(true);
   const [responseMessage, setResponseMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [cookies, setCookie] = useCookies(['luckyDrawData']);
+  const navigate = useNavigate();
 
   // Redirect if cookie data exists
   useEffect(() => {
@@ -34,7 +34,7 @@ const RegisterPage = () => {
     };
     console.log(requestData)
     try {
-      const response = await fetch(webhook_url, {
+      const response = await fetch(api_register, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // เพิ่ม Content-Type header

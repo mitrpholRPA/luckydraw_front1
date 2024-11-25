@@ -1,44 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { json, useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { Row , Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin } from 'antd';
 
 const LuckyDrawPage = () => {
   const location = useLocation();
-  const { jsonData: locationJsonData } = location.state || {}; // Data from navigation
-  const [cookies, setCookie] = useCookies(['luckyDrawData']); // Access cookies
+  const { jsonData: locationJsonData } = location.state || {};
+  const [cookies, setCookie] = useCookies(['luckyDrawData']);
 
   // State variables
   const [jsonData, setJsonData] = useState(locationJsonData || cookies.luckyDrawData || {});
+  const [hasLuckyDraw, setHasLuckyDraw] = useState(false);
   const [isDraw, setIsDraw] = useState(false);
-  const [isReceive, setIsReceive] = useState(false);
+  const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
+  const api_draw = 'http://localhost:3000/api/v1/draw';
 
-  const webhook_url =
-    'https://prod-45.southeastasia.logic.azure.com:443/workflows/22f1fe1a30cd463f8550b925827f0414/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sDguADVRQzPRLZG8kgJTMfncTOkN1_kXg15qJ0_UwRE';
+  // Initialize state from cookies
+  useEffect(() => {
+    if (cookies.luckyDrawData) {
+      setJsonData(cookies.luckyDrawData);
+    }
+    
+    if (jsonData) {
+      console.log(jsonData)
+      setIsDraw(jsonData.isluckydraw);
+      console.log(jsonData.isluckydraw)
+      setPrize(jsonData.gift_details|| '');
+      setHasLuckyDraw(jsonData.has_lucky_draw);
+      // Test Case Manager or After CutOffTime
+      // setHasLuckyDraw(false)
+    }
+  }, [cookies , jsonData]);
 
-    useEffect(() => {
-      // Initialize state with data from cookies if available
-      if (cookies.luckyDrawData) {
-        setJsonData(cookies.luckyDrawData);
-      }
-  
-      // Set states based on the current jsonData
-      if (jsonData) {
-        setIsDraw(jsonData.isluckydraw === 'true');
-        setPrize(jsonData.gift_name || '');
-        setIsReceive(jsonData.isreceive === 'true')
-      }
-    }, [cookies, jsonData]);
-
-  const handleLuckyDraw = async () => {
-    const requestData = {
-      employeeID: jsonData.id,
-      email: '',
-    };
+  const handleDraw = async () => {
+    setSpinner(true);
+    setIsDraw(true);
+    const requestData = { employeeID: jsonData.id };
 
     try {
-      const response = await fetch(webhook_url, {
+      const response = await fetch(api_draw, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestData),
@@ -46,20 +47,25 @@ const LuckyDrawPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const { status, Gift } = data;
+        // ใช้ optional chaining เพื่อหลีกเลี่ยงการ error
+        const gift = data.gift || {};
+        const isreceive = data.isreceive || false;
+        console.log(gift)
+
         const updatedData = {
           ...jsonData,
-          isluckydraw: 'true',
-          isreceive: status === 'true' ? 'true' : 'false',
-          gift_name: Gift,
-          expiry: new Date(Date.now() + 3600 * 1000).toISOString(), // ตั้งวันหมดอายุใหม่ (1 ชั่วโมง)
+          isluckydraw: true,
+          isreceive,
+          gift_id: gift.gift_id || '',
+          gift_details: gift.gift_details || 'รอลุ้นในงาน', // เพิ่ม default value
+          giver: gift.giver || '',
         };
-        // อัปเดต Cookie และ State
+        
+        setPrize(gift?.details || 'รอลุ้นในงาน');
         setJsonData(updatedData);
-        setCookie('luckyDrawData', updatedData, { path: '/', maxAge: 3600 }); // เก็บ Cookie ใหม่
-        setIsDraw(true);
-        setIsReceive(status === 'true');
-        setPrize(Gift);
+        console.log("update Cookies")
+        console.log(updatedData)
+        setCookie('luckyDrawData', updatedData, { path: '/', maxAge: 3600 });
       } else {
         console.error('Error:', await response.text());
         setPrize('รอลุ้นในงาน');
@@ -68,139 +74,143 @@ const LuckyDrawPage = () => {
       console.error('Request failed:', error);
       setPrize('รอลุ้นในงาน');
     } finally {
+      setSpinner(false);
     }
   };
 
+  const renderPrizeSection = () => {
+    if (isSpin) {
+      return <Spin size="large" tip="กำลังหมุน..." />;
+    }
+
+    if (!hasLuckyDraw) {
+      return (
+        <>
+          <h2 style={styles.text}>{jsonData.name}</h2>
+          <h1 style={styles.success}>✨ ลงทะเบียนสำเร็จ ✨</h1>
+        </>
+      );
+    }else{
+      if (isDraw) {
+        return (
+          <>
+            <h2 style={styles.text}>{jsonData.name}</h2>
+            <h2 style={styles.text}>คุณได้รับ</h2>
+            <h1 style={styles.prize}>{prize}</h1>
+            <h1 style={styles.prize}>✨ ✨ ✨ ✨ ✨</h1>
+          </>
+        );
+      }else {
+  
+        return (
+          <>
+            <h2 style={styles.text}>{prize}</h2>
+            <Button style={styles.button} onClick={handleDraw}>
+              กดปุ่มเพื่อสุ่ม!
+            </Button>
+          </>
+        );
+      }
+    }
+
+   
+  };
 
   return (
-    <div
-    style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(to bottom, #f7d794, #f6b93b)',
-        fontFamily: "'Poppins', sans-serif",
-        color: '#333', // เปลี่ยนเป็นโทนสีเข้มอ่อน
-      }}
-    >
-        {/* Header */}
-        <Row
-        style={{
-            height: '15vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(to bottom ,#f6b93b ,#f7d794  )',
-
-        }}
-        >
+    <div style={styles.container}>
+      {/* Header */}
+      <Row style={styles.headerContainer}>
         <Col span={24}>
-            <h1
-            style={{
-                fontSize: '6vw', // ใช้ vw เพื่อปรับตามความกว้างหน้าจอ
-                fontWeight: 'bold',
-                textAlign: 'center',
-            }}
-            >
-            🎉 Mitrphol New Year 2025 🎉
-            </h1>
-        </Col>
-        </Row>
-
-      {/* Content */}
-      <Row
-        style={{
-            height: '70vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            padding :'10px'
-            }}
-      >
-        <Col span={24}>
-          {isDraw ? (
-            <Spin size="large" tip="กำลังหมุน..." />
-          ) : isReceive ? (
-            <>
-                <h2
-                    style={{
-                      fontSize: '5vw',
-                      fontWeight: 'bold',
-                      marginBottom: '10px',
-                    }}
-                  >
-                    {jsonData}
-                  </h2>
-                  <h2
-                    style={{
-                      fontSize: '4vw',
-                      fontWeight: 'bold',
-                      marginBottom: '10px',
-                    }}
-                  >
-                    คุณได้รับ
-                  </h2>
-                  <h1
-                    style={{
-                      fontSize: '8vw',
-                      fontWeight: 'bold',
-                      margin: '20px 0',
-                      color: '#f6b93b',
-                      textShadow: '2px 2px 8px rgba(0,0,0,0.3)',
-                    }}
-                  >
-                    ✨ ชื่อรางวัลที่ได้รับ ✨
-                  </h1>
-            </>
-          ) : (
-                <Button
-                type="primary"
-                size="large"
-                style={{
-                    backgroundColor: '#f6b93b', // สีทองอ่อน
-                    borderColor: '#e58e26', // สีทองเข้ม
-                    fontSize: '5vw',
-                    height: 'auto',
-                    padding: '10px 20px',
-                    color: '#fff', // ตัวอักษรสีขาว
-                    fontWeight: 'bold',
-                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)', // เงาเพิ่มมิติ
-                    borderRadius: '8px', // มุมปุ่มโค้งมน
-                    transition: 'background-color 0.3s ease', // เพิ่มเอฟเฟกต์เปลี่ยนสี
-                }}
-                onClick={handleLuckyDraw}
-                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#e58e26')} // เปลี่ยนสีเมื่อ Hover
-                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#f6b93b')} // คืนสีเดิมเมื่อออกจาก Hover
-                >
-                กดปุ่มเพื่อสุ่ม!
-                </Button>
-
-          )}
+          <h1 style={styles.header}>🎉 Mitrphol New Year 2025 🎉</h1>
         </Col>
       </Row>
-    {/* Footer */}
-    <Row
-        style={{
-            height: '15vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(to bottom, #f6b93b, #e58e26)',
-        }}
-        >
+
+      {/* Content */}
+      <Row style={styles.content}>
+        <Col span={24}>{renderPrizeSection()}</Col>
+      </Row>
+
+      {/* Footer */}
+      <Row style={styles.footerContainer}>
         <Col span={24}>
-            <h1
-            style={{
-                fontSize: '6vw', // ใช้ vw เพื่อปรับตามความกว้างหน้าจอ
-                fontWeight: 'bold',
-                textAlign: 'center',
-            }}
-            >
-            🎉 ขอบคุณที่ร่วมกิจกรรม 🎉
-            </h1>
+          <h1 style={styles.footer}>🎉 ขอบคุณที่ร่วมกิจกรรม 🎉</h1>
         </Col>
       </Row>
     </div>
   );
+};
+
+// Styles
+const styles = {
+  container: {
+    minHeight: '100vh',
+    background: 'linear-gradient(to bottom, #f7d794, #f6b93b)',
+    fontFamily: "'Poppins', sans-serif",
+    color: '#333',
+  },
+  headerContainer: {
+    height: '15vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'linear-gradient(to bottom ,#f6b93b ,#f7d794)',
+  },
+  header: {
+    fontSize: '6vw',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  content: {
+    height: '70vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: '10px',
+  },
+  text: {
+    fontSize: '5vw',
+    fontWeight: 'bold',
+    marginBottom: '10px',
+  },
+  prize: {
+    fontSize: '6vw',
+    fontWeight: 'bold',
+    margin: '20px 0',
+    color: '#f6b93b',
+    textShadow: '2px 2px 8px rgba(0,0,0,0.3)',
+  },
+  success: {
+    fontSize: '8vw',
+    fontWeight: 'bold',
+    margin: '20px 0',
+    // color: '#f6b93b',
+    textShadow: '2px 2px 8px rgba(0,0,0,0.3)',
+  },
+  button: {
+    backgroundColor: '#f6b93b',
+    borderColor: '#e58e26',
+    fontSize: '5vw',
+    height: 'auto',
+    padding: '10px 20px',
+    color: '#fff',
+    fontWeight: 'bold',
+    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
+    borderRadius: '8px',
+    transition: 'background-color 0.3s ease',
+  },
+  footerContainer: {
+    height: '15vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'linear-gradient(to bottom, #f6b93b, #e58e26)',
+  },
+  footer: {
+    fontSize: '6vw',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 };
 
 export default LuckyDrawPage;

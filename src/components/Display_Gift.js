@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Row, Col } from 'antd';
 const Display_Gift = ({name , prize}) => {
     
@@ -107,4 +107,3 @@ const Display_Gift = ({name , prize}) => {
 }
 
 export default Display_Gift
-
