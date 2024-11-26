@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import 'dotenv/config'
 
-const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
-const api_register = apiEndpoint+'/api/v1/register'
+
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
@@ -13,6 +13,10 @@ const RegisterPage = () => {
   const [responseMessage, setResponseMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [cookies, setCookie] = useCookies(['luckyDrawData']);
+
+  // const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
+  const apiEndpoint =  process.env.REACT_APP_API;
+  const api_register = apiEndpoint+'/api/v1/register'
 
   // Redirect if cookie data exists
   useEffect(() => {

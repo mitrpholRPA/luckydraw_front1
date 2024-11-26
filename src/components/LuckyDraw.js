@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Row, Col, Button, Spin } from 'antd';
+import 'dotenv/config'
 
 const LuckyDrawPage = () => {
   const location = useLocation();
