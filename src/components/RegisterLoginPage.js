@@ -10,11 +10,15 @@ const RegisterPage = () => {
   const [responseMessage, setResponseMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [cookies, setCookie] = useCookies(['luckyDrawData']);
-
+  const [api_register , setApi] = useState('')
+  
   // const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
-  const apiEndpoint =  process.env.REACT_APP_API_URL;
-  const api_register = apiEndpoint+'/api/v1/register'
 
+  useEffect(()=>{
+      const apiEndpoint =  process.env.REACT_APP_API_URL+'/api/v1/register'
+      console.log(apiEndpoint)
+      setApi(apiEndpoint)
+  },[])
   // Redirect if cookie data exists
   useEffect(() => {
     if (cookies.luckyDrawData) {
