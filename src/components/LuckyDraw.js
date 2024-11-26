@@ -13,8 +13,9 @@ const LuckyDrawPage = () => {
   const [isDraw, setIsDraw] = useState(false);
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
-
-  const api_draw = process.env.REACT_APP_API+'/api/v1/draw';
+  
+  const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
+  const api_draw = apiEndpoint+'/api/v1/draw';
 
   // Initialize state from cookies
   useEffect(() => {

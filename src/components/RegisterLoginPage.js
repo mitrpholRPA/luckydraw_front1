@@ -3,7 +3,8 @@ import { Form, Input, Button, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-const api_register = process.env.REACT_APP_API+'/api/v1/register'
+const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
+const api_register = apiEndpoint+'/api/v1/register'
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
