@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import 'dotenv/config'
+
 
 
 
