@@ -3,7 +3,8 @@ import { Form, Input, Button, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-const api_register = 'https://newyear-appback1.azurewebsites.net/api/v1/register'
+const api_register = process.env.REACT_APP_API+'/api/v1/register'
+
 const RegisterPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -102,16 +103,16 @@ const RegisterPage = () => {
             }}
           >
             <Form.Item
-              label={<span style={{ fontSize: 'calc(1em + 0.5vw)' }}>Employee ID</span>}
+              label={<span style={{ fontSize: 'calc(1em + 0.5vw)' }}>Employee ID </span>}
               name="employeeID"
-              rules={[{ required: true, message: 'Please enter your Employee ID!' }]}
+              rules={[{ required: true, message: 'Please enter your Employee ID!'}]}
             >
               <Input placeholder="Enter your Employee ID" style={{ fontSize: 'calc(1em + 0.3vw)' }} />
             </Form.Item>
 
             {!statusSubmit ? (
               <div style={{ color: 'red' }}>
-                Invalid Employee ID!
+                Invalid Employee ID
               </div>
             ) : null}
 

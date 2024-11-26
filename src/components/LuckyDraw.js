@@ -7,7 +7,6 @@ const LuckyDrawPage = () => {
   const location = useLocation();
   const { jsonData: locationJsonData } = location.state || {};
   const [cookies, setCookie] = useCookies(['luckyDrawData']);
-
   // State variables
   const [jsonData, setJsonData] = useState(locationJsonData || cookies.luckyDrawData || {});
   const [hasLuckyDraw, setHasLuckyDraw] = useState(false);
@@ -15,14 +14,13 @@ const LuckyDrawPage = () => {
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
 
-  const api_draw = 'https://newyear-appback1.azurewebsites.net/api/v1/draw';
+  const api_draw = process.env.REACT_APP_API+'/api/v1/draw';
 
   // Initialize state from cookies
   useEffect(() => {
     if (cookies.luckyDrawData) {
       setJsonData(cookies.luckyDrawData);
     }
-    
     if (jsonData) {
       console.log(jsonData)
       setIsDraw(jsonData.isluckydraw);
@@ -36,7 +34,6 @@ const LuckyDrawPage = () => {
     setSpinner(true);
     setIsDraw(true);
     const requestData = { employeeID: jsonData.id };
-
     try {
       const response = await fetch(api_draw, {
         method: 'POST',
@@ -49,8 +46,6 @@ const LuckyDrawPage = () => {
         // ใช้ optional chaining เพื่อหลีกเลี่ยงการ error
         const gift = data.gift || {};
         const isreceive = data.isreceive || false;
-        console.log(gift)
-
         const updatedData = {
           ...jsonData,
           isluckydraw: true,
