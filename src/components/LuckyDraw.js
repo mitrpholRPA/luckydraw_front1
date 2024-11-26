@@ -13,10 +13,13 @@ const LuckyDrawPage = () => {
   const [isDraw, setIsDraw] = useState(false);
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
+  const [api_draw , setAPI] =useState()
   
-  const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
-  const api_draw = apiEndpoint+'/api/v1/draw';
 
+  useEffect(()=>{
+    const apiEndpoint = process.env.REACT_APP_API_URL+'/api/v1/draw';
+    setAPI(apiEndpoint)
+  },[])
   // Initialize state from cookies
   useEffect(() => {
     if (cookies.luckyDrawData) {
