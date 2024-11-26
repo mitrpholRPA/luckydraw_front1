@@ -3,6 +3,9 @@ import { Form, Input, Button, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
+const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
+const api_register = apiEndpoint+'/api/v1/register'
+
 const RegisterPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -10,15 +13,7 @@ const RegisterPage = () => {
   const [responseMessage, setResponseMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [cookies, setCookie] = useCookies(['luckyDrawData']);
-  const [api_register , setApi] = useState('')
-  
-  // const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
 
-  useEffect(()=>{
-      const apiEndpoint =  process.env.REACT_APP_API_URL+'/api/v1/register'
-      console.log(apiEndpoint)
-      setApi(apiEndpoint)
-  },[])
   // Redirect if cookie data exists
   useEffect(() => {
     if (cookies.luckyDrawData) {
