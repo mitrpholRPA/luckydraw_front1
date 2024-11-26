@@ -17,9 +17,7 @@ const RegisterPage = () => {
   // const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
   const apiEndpoint =  process.env.REACT_APP_API;
   const api_register = apiEndpoint+'/api/v1/register'
-  useEffect(()=>{
-      console.log(api_register)
-  },[])
+
   // Redirect if cookie data exists
   useEffect(() => {
     if (cookies.luckyDrawData) {
