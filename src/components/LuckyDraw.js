@@ -15,7 +15,6 @@ const LuckyDrawPage = () => {
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
   const [api_draw , setApi] = useState('')
-  
 
   useEffect(()=>{
     const apiEndpoint = process.env.REACT_APP_API_URL+'/api/v1/draw';
