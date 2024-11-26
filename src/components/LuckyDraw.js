@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Row, Col, Button, Spin } from 'antd';
-import 'dotenv/config'
+
 
 const LuckyDrawPage = () => {
   const location = useLocation();
@@ -15,7 +15,7 @@ const LuckyDrawPage = () => {
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
   
-  const apiEndpoint = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
+  const apiEndpoint = process.env.REACT_APP_API;
   const api_draw = apiEndpoint+'/api/v1/draw';
 
   // Initialize state from cookies
