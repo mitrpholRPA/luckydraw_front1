@@ -17,7 +17,8 @@ const LuckyDrawPage = () => {
   const [api_draw,setAPI] = useState('')
   
   useEffect(()=>{
-    const env_url = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
+    // const env_url = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
+    const env_url =  process.env.REACT_APP_API;
     const apiEndpoint =  env_url+'/api/v1/draw';
     setAPI(apiEndpoint)
     console.log(apiEndpoint)
