@@ -15,7 +15,8 @@ const RegisterPage = () => {
   const [api_register,setAPI] = useState('')
 
   useEffect(()=>{
-    const apiEndpoint =  process.env.REACT_APP_API+'/api/v1/register'
+    const env_url = window.RUNTIME_CONFIG?.REACT_APP_API || process.env.REACT_APP_API;
+    const apiEndpoint =  env_url+'/api/v1/register'
     setAPI(apiEndpoint)
     console.log(apiEndpoint)
   },[])
