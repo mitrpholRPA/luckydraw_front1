@@ -96,7 +96,7 @@ const LuckyDrawPage = () => {
       if (isDraw) {
         return (
           <>
-            <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
+            <h1 style={styles.success}>✨ ลงทะเบียนสำเร็จ ✨</h1>
             <h2 style={styles.textName}>{jsonData.name}</h2>
             { prize === 'รอลุ้นในงาน' || prize ===''? (
               <>
@@ -109,6 +109,7 @@ const LuckyDrawPage = () => {
             }
             <h1 style={styles.prize}>{prize}</h1>
 
+            <h1 style={styles.star}>✨ ✨ ✨ ✨ ✨ </h1>
           </>
         );
       }else {
@@ -139,7 +140,7 @@ const LuckyDrawPage = () => {
       {/* Footer */}
       <Row style={styles.footerContainer}>
         <Col span={24}>
-          <h1 style={styles.contentFooter}>ขอบคุณที่ร่วมกิจกรรม</h1>
+          <h1 style={styles.footer}>🎉 ขอบคุณที่ร่วมกิจกรรม 🎉</h1>
         </Col>
       </Row>
     </div>
@@ -151,7 +152,7 @@ const styles = {
   container: {
     minHeight: '100vh',
     // background: 'linear-gradient(to bottom, #f7d794, #f6b93b)',
-    background : `linear-gradient(to bottom, #3CDAD7, #238B88) , url('./flower.png')`,
+    background : `linear-gradient(to bottom, #44abab, white) , url('./flower.png')`,
     fontFamily: "'Poppins', sans-serif",
     color: '#333',
   },
@@ -162,6 +163,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop : '50px',
+    paddingBottom : '20px',
     color :'white',
     fontSize :'clamp(17px, 4.5vw, 30px)',
     marginBottom: '0', // ลดระยะห่างด้านล่าง
@@ -180,41 +182,34 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  headerContainer: {
+    height: '15vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header: {
+    fontSize: 'clamp(20px, 6vw, 70px)', // Responsive font size
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
   content: {
+    height: '70vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
+    padding: '10px',
   },
-  textRegister : {
-    fontFamily : 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '400',
-    lineHeight: '150%',
-    fontSize:'clamp(20px, 25px, 45px)',
-    color: '#FFFFFF',
-    textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-
+  text: {
+    fontSize:'clamp(17px, 4vw, 45px)',
+    fontWeight: 'bold',
+    marginBottom: '10px',
   },
-  textName : {
-    fontFamily : 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '400',
-    lineHeight: '150%',
-    fontSize:'clamp(20px, 25px, 45px)',
-    color: '#FFFFFF',
-    textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-
-  },
-  contentFooter : {
-    fontFamily : 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '400',
-    lineHeight: '150%',
-    fontSize:'clamp(20px, 25px, 45px)',
-    color: '#FFFFFF',
-    textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    textAlign : 'center'
+  textName: {
+    fontSize:'clamp(20px, 4vw, 45px)',
+    fontWeight: 'bold',
+    marginBottom: '10px',
   },
   prize: {
     fontSize:'clamp(20px, 6vw,  60px)',
@@ -228,7 +223,22 @@ const styles = {
     borderColor : '#a3e4d7 ',
     backgroundColor :'#f9e79f'
   },
+  star: {
+    fontSize:'clamp(20px, 6vw, 50px)',
+    fontWeight: 'bold',
+    margin: '20px 0',
+    color: '#eaeded',
+    textShadow: '2px 2px 8px rgba(0,0,0,0.3)',
+   
+  },
+  success: {
+    fontSize:'clamp(20px, 8vw, 40px)',
+    fontWeight: 'bold',
+    margin: '20px 0',
+    color: '#f6b93b',
+    textShadow: '2px 2px 8px rgba(0,0,0,0.3)',
 
+  },
   button: {
     backgroundColor: '#f1c40f',
     borderColor: '#e58e26',
@@ -252,7 +262,11 @@ const styles = {
     justifyContent: 'center',
     // background: 'linear-gradient(to bottom, #f6b93b, #e58e26)',
   },
-
+  footer: {
+    fontSize:'clamp(20px, 6vw, 50px)',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 };
 
 export default LuckyDrawPage;

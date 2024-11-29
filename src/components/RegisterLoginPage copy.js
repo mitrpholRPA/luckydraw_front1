@@ -76,41 +76,66 @@ const RegisterPage = () => {
           <h2 style={style.title}>2025</h2>
       </Row>
 
-      <Row style={style.content}>
+
+      <Row
+        style={{
+          minHeight: '50vh',
+          padding : '10px 10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          
+          marginTop: '0', // ลดระยะห่างด้านบน
+        }}
+      >
         <Col xs={24} sm={16} md={12} lg={8}>
           <Card
-            title={<h1 style={style.text_content}>Welcome to Mitrphol New Year</h1>}
+            title={<h1 style={{ fontSize: 'calc(0.7em + 1.3vw)', textAlign: 'center', margin: 0 ,}}>Welcome to Mitrphol New Year</h1>}
             bordered={true}
-            style={style.contentForm}
+            style={{
+              border: '2px solid white',
+              borderRadius: '16px',
+              height: '50vh',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              padding: '8px',
+            
+            }}
           >
             <Form
               form={form}
               name="registerForm"
               onFinish={handleFinish}
               layout="vertical"
-              style={style.form}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                height: '100%',
+              }}
             >
               <Form.Item
-                label={<span style={style.formLabel}>Employee ID </span>}
+                label={<span style={{ fontSize: 'calc(1em + 0.5vw)' }}>Employee ID </span>}
                 name="employeeID"
                 rules={[{ required: true, message: 'Please enter your Employee ID!'}]}
               >
-                <Input placeholder="Enter your Employee ID" style={style.formPlaceholder} />
+                <Input placeholder="Enter your Employee ID" style={{ fontSize: 'calc(1em + 0.3vw)' }} />
               </Form.Item>
 
               {!statusSubmit ? (
-                <div style={style.alertLabel}>
+                <div style={{ color: 'red' }}>
                   Invalid Employee ID
                 </div>
               ) : null}
 
-              <Form.Item style={style.formItemButton}>
+              <Form.Item style={{ marginTop: '10px' }}>
                 <Button 
                   type="primary" 
                   htmlType="submit" 
                   block 
                   loading={loading}
-                  style={style.formButton}
+                  style={{ fontSize: 'calc(1em + 0.3vw)' }}
                 >
                   Submit
                 </Button>
@@ -142,71 +167,21 @@ const style = {
     fontSize :'clamp(17px, 4.5vw, 30px)',
     marginBottom: '0', // ลดระยะห่างด้านล่าง
   },
-  title : {
-    width: "100%",
-    height: "10px",
+  content_title : {
+    position: "absolute",
+    width: "266px",
+    height: "72px",
+    left: "27px",
+    top: "90px",
     fontFamily: "'PT Serif'",
     fontStyle: "normal",
     fontWeight: 700,
-    fontSize: 'clamp(24x, 6vw, 40px)',
+    fontSize: "24px",
+    lineHeight: "150%", // or use "36px" if you prefer that unit
     textAlign: "center",
     color: "#FFFFFF",
     textShadow: "0px 4px 4px rgba(0, 0, 0, 0.35)",
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  content : {
-      minHeight: '50vh',
-      padding : '10px 10px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-  },
-  text_content :{ 
-    // fontSize: 'calc(0.7em + 1.3vw)', 
-    fontSize: 'clamp(14px, 16px, 20px)',
-    textAlign: 'center',
-    margin: 0 ,
-    color : '#346B9D',
-    fontFamily :'Inter'
-  },
-  contentForm :{
-    border: '2px solid white',
-    borderRadius: '16px',
-    height: '50vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: '8px',
-  },
-  form :{
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: '100%',
-  },
-  formLabel :{ 
-    fontSize: 'clamp(14px, 16px, 20px)',
-    color :'#346B9D'
-  },
-  formPlaceholder : { 
-    fontSize: 'calc(1em + 0.3vw)' 
-  },
-  alertLabel :{
-     color: 'red'
-  },
-  formItemButton :{
-     marginTop: '10px'
-  },
-  formButton : { 
-    fontSize: 'calc(1em + 0.3vw)',
-    backgroundColor  : '#346B9D',
-    color :'white',
-    width: '238px',
-    height: '33px',
-    borderRadius: '12px'
-  },
-
+    
+  }
 };
 export default RegisterPage;
