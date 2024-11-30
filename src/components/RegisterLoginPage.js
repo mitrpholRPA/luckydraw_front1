@@ -197,7 +197,10 @@ const style = {
      color: 'red'
   },
   formItemButton :{
-     marginTop: '10px'
+     marginTop: '10px',
+     display: 'flex',              // Add this
+     justifyContent: 'center',     // Add this
+     alignItems: 'center',         // Add this
   },
   formButton : { 
     fontSize: 'calc(1em + 0.3vw)',
@@ -206,6 +209,8 @@ const style = {
     width: '238px',
     height: '33px',
     borderRadius: '12px'
+    
+    
   },
 
 };

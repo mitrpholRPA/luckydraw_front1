@@ -3,7 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Row, Col, Button, Spin } from 'antd';
 import './LuckyDraw.css'
-
+import './GiftBox.css'
+import GiftBox  from './GiftBox';
 const LuckyDrawPage = () => {
   const location = useLocation();
   const { jsonData: locationJsonData } = location.state || {};
@@ -15,6 +16,7 @@ const LuckyDrawPage = () => {
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
   const [api_draw,setAPI] = useState('')
+  const [isReceiveGift,setReceiveGift] = useState(false)
   
   useEffect(()=>{
     const env_url =  process.env.REACT_APP_API;
@@ -31,9 +33,13 @@ const LuckyDrawPage = () => {
     if (jsonData) {
       console.log(jsonData)
       setIsDraw(jsonData.isluckydraw);
-      console.log(jsonData.isluckydraw)
+      setReceiveGift(jsonData.isreceive);
       setPrize(jsonData.gift_details|| '');
       setHasLuckyDraw(jsonData.has_lucky_draw);
+      //Test
+      // setIsDraw(false)
+      // setReceiveGift(false)
+
     }
   }, [cookies , jsonData]);
 
@@ -65,8 +71,6 @@ const LuckyDrawPage = () => {
         
         setPrize(gift?.details || 'รอลุ้นในงาน');
         setJsonData(updatedData);
-        console.log("update Cookies")
-        console.log(updatedData)
         setCookie('luckyDrawData', updatedData, { path: '/', maxAge: 3600 });
       } else {
         console.error('Error:', await response.text());
@@ -77,6 +81,7 @@ const LuckyDrawPage = () => {
       setPrize('รอลุ้นในงาน');
     } finally {
       setSpinner(false);
+      console.log(prize)
     }
   };
 
@@ -98,27 +103,39 @@ const LuckyDrawPage = () => {
           <>
             <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
             <h2 style={styles.textName}>{jsonData.name}</h2>
+
+            <GiftBox isDraw ={true} displayPrize = {prize}/>
             { prize === 'รอลุ้นในงาน' || prize ===''? (
-              <>
-                <h2 style={styles.text}> คุณไม่ได้รับรางวัล </h2>
-                <h1 style={styles.prize}>รอลุ้นในงาน</h1>
-              </>
+              <></>
               ):(
               <h2 style={styles.text}>คุณได้รับ</h2>
               )
             }
-            <h1 style={styles.prize}>{prize}</h1>
-
+   
           </>
         );
       }else {
         return (
           <>
-            <Button style={styles.button} onClick={handleDraw}>
-              LuckyDraw 
-            </Button>
+
+         
+          {isReceiveGift ? (
+            <GiftBox isDraw ={false} prize ={''}/>
+          ):(
+            <>
+            <GiftBox isDraw ={false} isRecive={false}/>
+ 
+            <div style={styles.buttonContainer}>
+              <Button style={styles.button} onClick={handleDraw}>
+                LuckyDraw
+              </Button>
+            </div>
+            </>
+            )
+          }
+
           </>
-        );
+      )
       }
     }
   };
@@ -179,12 +196,14 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop : '5px'
   },
   content: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
+    
   },
   textRegister : {
     fontFamily : 'Inter',
@@ -194,7 +213,7 @@ const styles = {
     fontSize:'clamp(20px, 25px, 45px)',
     color: '#FFFFFF',
     textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-
+    margin : 0
   },
   textName : {
     fontFamily : 'Inter',
@@ -204,6 +223,7 @@ const styles = {
     fontSize:'clamp(20px, 25px, 45px)',
     color: '#FFFFFF',
     textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    margin : '10px'
 
   },
   contentFooter : {
@@ -214,7 +234,8 @@ const styles = {
     fontSize:'clamp(20px, 25px, 45px)',
     color: '#FFFFFF',
     textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    textAlign : 'center'
+    textAlign : 'center',
+    margin : 0
   },
   prize: {
     fontSize:'clamp(20px, 6vw,  60px)',
@@ -229,6 +250,21 @@ const styles = {
     backgroundColor :'#f9e79f'
   },
 
+  footerContainer: {
+    display: 'flex',             /* ใช้ flexbox */
+    justifyContent: 'center',    /* จัดกลางในแนวนอน */
+    alignItems: 'center',        /* จัดกลางในแนวตั้ง */
+    height: 'auto',              /* ให้ footer มีความสูงตามเนื้อหาภายใน */
+    padding: '10px 0',           /* เพิ่ม padding สำหรับช่องว่างด้านบนและล่าง */
+    margin: 0,                   /* ลบ margin ที่ไม่ต้องการ */
+  },
+  buttonContainer: {
+    display: 'flex',            /* ใช้ flexbox สำหรับจัดกลาง */
+    justifyContent: 'center',   /* จัดปุ่มให้อยู่กลางในแนวนอน */
+    alignItems: 'center',       /* จัดปุ่มให้อยู่กลางในแนวตั้ง */
+    width: '100%',              /* ให้ container ครอบคลุมความกว้างทั้งหมด */
+    height: '100%',             /* ให้ container ครอบคลุมความสูงทั้งหมด */
+  },
   button: {
     backgroundColor: '#f1c40f',
     borderColor: '#e58e26',
@@ -244,14 +280,12 @@ const styles = {
     maxWidth: '700px',          // กำหนดความกว้างสูงสุด
     minHeight: '90px',          // กำหนดความสูงขั้นต่ำ
     maxHeight: '200px',         // กำหนดความสูงสูงสุด
+
+    display: 'flexbox',
+    justifyContent: 'center',  /* จัดให้อยู่กลางในแนวนอน */
+    alignItems: 'center',    /* จัดให้อยู่กลางในแนวตั้ง */
   },
-  footerContainer: {
-    height: '10vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // background: 'linear-gradient(to bottom, #f6b93b, #e58e26)',
-  },
+  
 
 };
 

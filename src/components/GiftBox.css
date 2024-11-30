@@ -1,0 +1,60 @@
+.gift-container {
+    display: flex;
+    flex-direction: column; /* จัดเรียงในแนวตั้ง */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: url('/public/images/prize-box.png') no-repeat center; /* พื้นหลัง container หลัก */
+    background-size: cover; /* ปรับให้เต็มพื้นที่ */
+    border-radius: 20px; /* มุมโค้งมน */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* จัดข้อความตรงกลาง */
+    display: flex;
+    width: 80vw; /* ปรับขนาดตามความกว้างของหน้าจอ */
+    max-width: 500px; /* จำกัดขนาดสูงสุด */
+    height: auto;
+    max-height: 80vh; /* จำกัดขนาดความสูง */
+    overflow: hidden; /* ซ่อนเนื้อหาที่เกิน */
+  }
+  .gift-container-wrapper {
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+  
+    margin: 0; /* ลบ margin ที่อาจมี */
+    padding: 0; /* ลบ padding ที่อาจมี */
+    width: 100%; /* ให้ container ครอบคลุมความกว้างทั้งหมด */
+  }
+  
+  .gift-lid img {
+    max-width: 100%; /* ปรับขนาดรูปฝากล่องให้อัตโนมัติ */
+    height: auto;
+  }
+  
+  .gift-text {
+    /* margin: 20px 0; */
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+  }
+  .gift-text-bold {
+    /* margin: 20px 0; */
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+   font-weight: bold;
+  }
+  
+  .gift-text h2 {
+    font-size: clamp(1rem, 5vw, 1.5rem); /* ขนาดฟอนต์ปรับตามหน้าจอ */
+    font-weight: bold;
+  }
+  
+  .gift-text p {
+    font-size: clamp(0.9rem, 4vw, 1.2rem); /* ขนาดฟอนต์ปรับตามหน้าจอ */
+    margin-top: 10px;
+  }
+  
+  .gift-box img {
+    max-width: 100%;
+    height: auto;
+  }
