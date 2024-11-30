@@ -9,7 +9,7 @@ const GiftBox = ({isDraw,isRecive,displayPrize}) => {
             <div className="gift-lid">
                 <img src={`${process.env.PUBLIC_URL}/images/Box-Lid.png`} alt="Gift Lid" />
             </div>
-            
+
             {isDraw ? (
                 isRecive ?(
                     <div className="gift-text">
@@ -21,17 +21,12 @@ const GiftBox = ({isDraw,isRecive,displayPrize}) => {
                     <div className="gift-text-bold">  รอลุ้นรางวัลใหญ่ในงาน </div>
                     </>
                 )
-            
             ):(
                 <div className="gift-text">
                     <h2>{displayPrize}</h2>
                 </div>
             )
         }
-
-
-
-
             {/* กล่องของขวัญ */}
             <div className="gift-box">
                 <img src={`${process.env.PUBLIC_URL}/images/Box.png`} alt="Gift Box" />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Row, Col, Button, Spin } from 'antd';
+
 import './LuckyDraw.css'
 import './GiftBox.css'
 import GiftBox  from './GiftBox';
@@ -11,12 +12,12 @@ const LuckyDrawPage = () => {
   const [cookies, setCookie] = useCookies(['luckyDrawData']);
   // State variables
   const [jsonData, setJsonData] = useState(locationJsonData || cookies.luckyDrawData || {});
-  const [hasLuckyDraw, setHasLuckyDraw] = useState(false);
+  // const [hasLuckyDraw, setHasLuckyDraw] = useState(false);
   const [isDraw, setIsDraw] = useState(false);
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
   const [api_draw,setAPI] = useState('')
-  const [isReceiveGift,setReceiveGift] = useState(false)
+  // const [isReceiveGift,setReceiveGift] = useState(false)
   
   useEffect(()=>{
     const env_url =  process.env.REACT_APP_API;
@@ -33,12 +34,10 @@ const LuckyDrawPage = () => {
     if (jsonData) {
       console.log(jsonData)
       setIsDraw(jsonData.isluckydraw);
-      setReceiveGift(jsonData.isreceive);
+      // setReceiveGift(jsonData.isreceive);
       setPrize(jsonData.gift_details|| '');
-      setHasLuckyDraw(jsonData.has_lucky_draw);
+      // setHasLuckyDraw(jsonData.has_lucky_draw);
       //Test
-      // setIsDraw(false)
-      // setReceiveGift(false)
 
     }
   }, [cookies , jsonData]);
@@ -85,61 +84,79 @@ const LuckyDrawPage = () => {
     }
   };
 
+  // const renderPrizeSection = () => {
+  //   if (isSpin) {
+  //     return <Spin size="large" tip="กำลังหมุน..." />;
+  //   }
+
+  //   if (!hasLuckyDraw) {
+  //     return (
+  //       <>
+  //         <h2 style={styles.textName}>{jsonData.name}</h2>
+  //         <h1 style={styles.success}>✨ ลงทะเบียนสำเร็จ ✨</h1>
+  //       </>
+  //     );
+  //   }else{
+  //     if (isDraw) {
+  //       return (
+  //         <>
+  //           <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
+  //           <h2 style={styles.textName}>{jsonData.name}</h2>
+  //           <GiftBox isDraw ={true} displayPrize = {prize} isRecive={isReceiveGift}/>
+  //         </>
+  //       );
+  //     }else {
+  //       return (
+  //         <>
+  //         {isReceiveGift ? (
+  //           <GiftBox isDraw ={false} displayPrize ={''} isRecive={isReceiveGift}/>
+  //         ):(
+  //           <>
+  //           <GiftBox isDraw ={false} isRecive={false}/>
+ 
+  //           <div style={styles.buttonContainer}>
+  //             <Button style={styles.button} onClick={handleDraw}>
+  //               LuckyDraw
+  //             </Button>
+  //           </div>
+  //           </>
+  //           )
+  //         }
+
+  //         </>
+  //     )
+  //     }
+  //   }
+  // };
   const renderPrizeSection = () => {
     if (isSpin) {
       return <Spin size="large" tip="กำลังหมุน..." />;
     }
 
-    if (!hasLuckyDraw) {
+    const { name, has_lucky_draw, isreceive } = jsonData;
+    if (!has_lucky_draw) {
       return (
         <>
-          <h2 style={styles.textName}>{jsonData.name}</h2>
+          <h2 style={styles.textName}>{name}</h2>
           <h1 style={styles.success}>✨ ลงทะเบียนสำเร็จ ✨</h1>
         </>
       );
-    }else{
-      if (isDraw) {
-        return (
-          <>
-            <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
-            <h2 style={styles.textName}>{jsonData.name}</h2>
-
-            <GiftBox isDraw ={true} displayPrize = {prize}/>
-            { prize === 'รอลุ้นในงาน' || prize ===''? (
-              <></>
-              ):(
-              <h2 style={styles.text}>คุณได้รับ</h2>
-              )
-            }
-   
-          </>
-        );
-      }else {
-        return (
-          <>
-
-         
-          {isReceiveGift ? (
-            <GiftBox isDraw ={false} prize ={''}/>
-          ):(
-            <>
-            <GiftBox isDraw ={false} isRecive={false}/>
- 
-            <div style={styles.buttonContainer}>
-              <Button style={styles.button} onClick={handleDraw}>
-                LuckyDraw
-              </Button>
-            </div>
-            </>
-            )
-          }
-
-          </>
-      )
-      }
     }
-  };
 
+    return (
+      <>
+        <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
+        <h2 style={styles.textName}>{name}</h2>
+        <GiftBox isDraw={isDraw} displayPrize={prize} isRecive={isreceive} />
+        {!isDraw && !isreceive && (
+          <div style={styles.buttonContainer}>
+            <Button style={styles.button} onClick={handleDraw}>LuckyDraw</Button>
+          </div>
+        )}
+      </>
+    );
+  };
+  
   return (
     <div style={styles.container}>
       {/* Header */}
@@ -268,7 +285,7 @@ const styles = {
   button: {
     backgroundColor: '#f1c40f',
     borderColor: '#e58e26',
-    fontSize: '7vw',
+    fontSize: '4vw',
     height: 'auto',
     padding: '10px 20px',
     color: '#fff',
@@ -278,9 +295,9 @@ const styles = {
     transition: 'background-color 0.3s ease',
     minWidth: '200px',          // กำหนดความกว้างขั้นต่ำ
     maxWidth: '700px',          // กำหนดความกว้างสูงสุด
-    minHeight: '90px',          // กำหนดความสูงขั้นต่ำ
-    maxHeight: '200px',         // กำหนดความสูงสูงสุด
-
+    minHeight: '70px',          // กำหนดความสูงขั้นต่ำ
+    maxHeight: '150px',         // กำหนดความสูงสูงสุด
+    margin : '20px',
     display: 'flexbox',
     justifyContent: 'center',  /* จัดให้อยู่กลางในแนวนอน */
     alignItems: 'center',    /* จัดให้อยู่กลางในแนวตั้ง */
