@@ -12,12 +12,12 @@ const LuckyDrawPage = () => {
   const [cookies, setCookie] = useCookies(['luckyDrawData']);
   // State variables
   const [jsonData, setJsonData] = useState(locationJsonData || cookies.luckyDrawData || {});
-  // const [hasLuckyDraw, setHasLuckyDraw] = useState(false);
+  const [hasLuckyDraw, setHasLuckyDraw] = useState(false);
   const [isDraw, setIsDraw] = useState(false);
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
   const [api_draw,setAPI] = useState('')
-  // const [isReceiveGift,setReceiveGift] = useState(false)
+  const [isReceiveGift,setReceiveGift] = useState(false)
   
   useEffect(()=>{
     const env_url =  process.env.REACT_APP_API;
@@ -32,13 +32,10 @@ const LuckyDrawPage = () => {
       setJsonData(cookies.luckyDrawData);
     }
     if (jsonData) {
-      console.log(jsonData)
       setIsDraw(jsonData.isluckydraw);
-      // setReceiveGift(jsonData.isreceive);
+      setReceiveGift(jsonData.isreceive);
       setPrize(jsonData.gift_details|| '');
-      // setHasLuckyDraw(jsonData.has_lucky_draw);
-      //Test
-
+      setHasLuckyDraw(jsonData.has_lucky_draw);
     }
   }, [cookies , jsonData]);
 
@@ -64,13 +61,12 @@ const LuckyDrawPage = () => {
           isluckydraw: true,
           isreceive,
           gift_id: gift.gift_id || '',
-          gift_details: gift.gift_details || 'รอลุ้นในงาน', // เพิ่ม default value
+          gift_details: gift.details || 'รอลุ้นในงาน', // เพิ่ม default value
           giver: gift.giver || '',
         };
-        
-        setPrize(gift?.details || 'รอลุ้นในงาน');
         setJsonData(updatedData);
         setCookie('luckyDrawData', updatedData, { path: '/', maxAge: 3600 });
+        console.log(updatedData)
       } else {
         console.error('Error:', await response.text());
         setPrize('รอลุ้นในงาน');
@@ -84,78 +80,78 @@ const LuckyDrawPage = () => {
     }
   };
 
-  // const renderPrizeSection = () => {
-  //   if (isSpin) {
-  //     return <Spin size="large" tip="กำลังหมุน..." />;
-  //   }
-
-  //   if (!hasLuckyDraw) {
-  //     return (
-  //       <>
-  //         <h2 style={styles.textName}>{jsonData.name}</h2>
-  //         <h1 style={styles.success}>✨ ลงทะเบียนสำเร็จ ✨</h1>
-  //       </>
-  //     );
-  //   }else{
-  //     if (isDraw) {
-  //       return (
-  //         <>
-  //           <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
-  //           <h2 style={styles.textName}>{jsonData.name}</h2>
-  //           <GiftBox isDraw ={true} displayPrize = {prize} isRecive={isReceiveGift}/>
-  //         </>
-  //       );
-  //     }else {
-  //       return (
-  //         <>
-  //         {isReceiveGift ? (
-  //           <GiftBox isDraw ={false} displayPrize ={''} isRecive={isReceiveGift}/>
-  //         ):(
-  //           <>
-  //           <GiftBox isDraw ={false} isRecive={false}/>
- 
-  //           <div style={styles.buttonContainer}>
-  //             <Button style={styles.button} onClick={handleDraw}>
-  //               LuckyDraw
-  //             </Button>
-  //           </div>
-  //           </>
-  //           )
-  //         }
-
-  //         </>
-  //     )
-  //     }
-  //   }
-  // };
   const renderPrizeSection = () => {
     if (isSpin) {
       return <Spin size="large" tip="กำลังหมุน..." />;
     }
 
-    const { name, has_lucky_draw, isreceive } = jsonData;
-    if (!has_lucky_draw) {
+    if (!hasLuckyDraw) {
       return (
         <>
-          <h2 style={styles.textName}>{name}</h2>
+          <h2 style={styles.textName}>{jsonData.name}</h2>
           <h1 style={styles.success}>✨ ลงทะเบียนสำเร็จ ✨</h1>
         </>
       );
-    }
+    }else{
+      if (isDraw) {
+        return (
+          <>
+            <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
+            <h2 style={styles.textName}>{jsonData.name}</h2>
+            <GiftBox isDraw ={true} displayPrize = {prize} isRecive={isReceiveGift}/>
+          </>
+        );
+      }else {
+        return (
+          <>
+          {isReceiveGift ? (
+            <GiftBox isDraw ={false} displayPrize ={''} isRecive={isReceiveGift}/>
+          ):(
+            <>
+            <GiftBox isDraw ={false} isRecive={false}/>
+ 
+            <div style={styles.buttonContainer}>
+              <Button style={styles.button} onClick={handleDraw}>
+                LuckyDraw
+              </Button>
+            </div>
+            </>
+            )
+          }
 
-    return (
-      <>
-        <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
-        <h2 style={styles.textName}>{name}</h2>
-        <GiftBox isDraw={isDraw} displayPrize={prize} isRecive={isreceive} />
-        {!isDraw && !isreceive && (
-          <div style={styles.buttonContainer}>
-            <Button style={styles.button} onClick={handleDraw}>LuckyDraw</Button>
-          </div>
-        )}
-      </>
-    );
+          </>
+      )
+      }
+    }
   };
+  // const renderPrizeSection = () => {
+  //   if (isSpin) {
+  //     return <Spin size="large" tip="กำลังหมุน..." />;
+  //   }
+
+  //   const { name, has_lucky_draw, isreceive } = jsonData;
+  //   if (!has_lucky_draw) {
+  //     return (
+  //       <>
+  //         <h2 style={styles.textName}>{name}</h2>
+  //         <h1 style={styles.success}>✨ ลงทะเบียนสำเร็จ ✨</h1>
+  //       </>
+  //     );
+  //   }
+
+  //   return (
+  //     <>
+  //       <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
+  //       <h2 style={styles.textName}>{name}</h2>
+  //       <GiftBox isDraw={isDraw} displayPrize={prize} isRecive={isreceive} />
+  //       {!isDraw && !isreceive && (
+  //         <div style={styles.buttonContainer}>
+  //           <Button style={styles.button} onClick={handleDraw}>LuckyDraw</Button>
+  //         </div>
+  //       )}
+  //     </>
+  //   );
+  // };
   
   return (
     <div style={styles.container}>
