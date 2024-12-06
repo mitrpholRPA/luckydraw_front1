@@ -25,17 +25,16 @@ const RegisterPage = () => {
   }, [cookies, navigate]);
 
   const handleFinish = (values) => {
-    const { employeeID } = values;
+    const { emailAddress } = values;
     setStatus(true);
     form.resetFields();
-    handleRegister(employeeID);
+    handleRegister(emailAddress);
   };
 
-  const handleRegister = async (employeeID) => {
+  const handleRegister = async (emailAddress) => {
     setLoading(true);
     const requestData = {
-      employeeID: employeeID,
-      email: '',
+      'email': emailAddress
     };
     try {
       const response = await fetch(api_register, {
@@ -91,16 +90,16 @@ const RegisterPage = () => {
               style={style.form}
             >
               <Form.Item
-                label={<span style={style.formLabel}>Employee ID </span>}
-                name="employeeID"
-                rules={[{ required: true, message: 'Please enter your Employee ID!'}]}
+                label={<span style={style.formLabel}>Email </span>}
+                name="emailAddress"
+                rules={[{ required: true, message: 'Please enter your Email!'}]}
               >
-                <Input placeholder="Enter your Employee ID" style={style.formPlaceholder} />
+                <Input placeholder="Enter your Email " style={style.formPlaceholder} />
               </Form.Item>
 
               {!statusSubmit ? (
                 <div style={style.alertLabel}>
-                  Invalid Employee ID
+                  Invalid Email
                 </div>
               ) : null}
 

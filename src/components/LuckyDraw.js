@@ -42,7 +42,7 @@ const LuckyDrawPage = () => {
   const handleDraw = async () => {
     setSpinner(true);
     setIsDraw(true);
-    const requestData = { employeeID: jsonData.id };
+    const requestData = { email: jsonData.email };
     try {
       const response = await fetch(api_draw, {
         method: 'POST',
