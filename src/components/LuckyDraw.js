@@ -16,6 +16,7 @@ const LuckyDrawPage = () => {
   const [isDraw, setIsDraw] = useState(false);
   const [isSpin, setSpinner] = useState(false);
   const [prize, setPrize] = useState('');
+  const [id, setID] = useState('');
   const [api_draw,setAPI] = useState('')
   const [isReceiveGift,setReceiveGift] = useState(false)
   
@@ -35,7 +36,8 @@ const LuckyDrawPage = () => {
       setIsDraw(jsonData.isluckydraw);
       setReceiveGift(jsonData.isreceive);
       // setPrize(jsonData.gift_details|| '');
-      setPrize(jsonData.gift_id+"."+jsonData.giver|| '');
+      setPrize(jsonData.giver|| '');
+      setID(jsonData.gift_id)
       setHasLuckyDraw(jsonData.has_lucky_draw);
     }
   }, [cookies , jsonData]);
@@ -99,14 +101,14 @@ const LuckyDrawPage = () => {
           <>
             <h1 style={styles.textRegister}>ลงทะเบียนสำเร็จ</h1>
             <h2 style={styles.textName}>{jsonData.name}</h2>
-            <GiftBox isDraw ={true} displayPrize = {prize} isRecive={isReceiveGift}/>
+            <GiftBox isDraw ={true} displayPrize = {prize} isRecive={isReceiveGift} id={id}/>
           </>
         );
       }else {
         return (
           <>
           {isReceiveGift ? (
-            <GiftBox isDraw ={false} displayPrize ={''} isRecive={isReceiveGift}/>
+            <GiftBox isDraw ={false} displayPrize ={''} isRecive={isReceiveGift} id={id}/>
           ):(
             <>
             <GiftBox isDraw ={false} isRecive={false}/>

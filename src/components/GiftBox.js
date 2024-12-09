@@ -1,7 +1,7 @@
 import React from 'react';
 import './GiftBox.css'; // ไฟล์ CSS สำหรับจัดการ style
 
-const GiftBox = ({isDraw,isRecive,displayPrize}) => {
+const GiftBox = ({isDraw,isRecive,displayPrize,id}) => {
   return (
     <div className="gift-container-wrapper">
         <div className="gift-container">
@@ -13,6 +13,7 @@ const GiftBox = ({isDraw,isRecive,displayPrize}) => {
             {isDraw ? (
                 isRecive ?(
                     <div className="gift-text">
+                        <h2>{id}</h2>
                         <h2>{displayPrize}</h2>
                     </div>
                 ):(
