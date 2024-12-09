@@ -92,7 +92,7 @@ const LuckyDrawPage = () => {
       return (
         <>
           <h2 style={styles.textName}>{jsonData.name}</h2>
-          <h1 style={styles.success}>✨ ลงทะเบียนสำเร็จ ✨</h1>
+          <h1 style={styles.textRegister}> ลงทะเบียนสำเร็จ </h1>
         </>
       );
     }else{
