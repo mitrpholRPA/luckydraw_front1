@@ -34,7 +34,8 @@ const LuckyDrawPage = () => {
     if (jsonData) {
       setIsDraw(jsonData.isluckydraw);
       setReceiveGift(jsonData.isreceive);
-      setPrize(jsonData.gift_details|| '');
+      // setPrize(jsonData.gift_details|| '');
+      setPrize(jsonData.gift_id+"."+jsonData.giver|| '');
       setHasLuckyDraw(jsonData.has_lucky_draw);
     }
   }, [cookies , jsonData]);
