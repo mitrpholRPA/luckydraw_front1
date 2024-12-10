@@ -36,7 +36,7 @@ const LuckyDrawPage = () => {
       setIsDraw(jsonData.isluckydraw);
       setReceiveGift(jsonData.isreceive);
       // setPrize(jsonData.gift_details|| '');
-      setPrize(jsonData.giver|| '');
+      setPrize(jsonData.gift_giver);
       setID(jsonData.gift_id)
       setHasLuckyDraw(jsonData.has_lucky_draw);
     }
@@ -65,11 +65,11 @@ const LuckyDrawPage = () => {
           isreceive,
           gift_id: gift.gift_id || '',
           gift_details: gift.details || 'รอลุ้นในงาน', // เพิ่ม default value
-          giver: gift.giver || '',
+          gift_giver: gift.giver || '',
         };
         setJsonData(updatedData);
         setCookie('luckyDrawData', updatedData, { path: '/', maxAge: 3600 });
-        console.log(updatedData)
+        // console.log(updatedData)
       } else {
         console.error('Error:', await response.text());
         setPrize('รอลุ้นในงาน');
