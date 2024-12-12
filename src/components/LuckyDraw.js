@@ -91,8 +91,18 @@ const LuckyDrawPage = () => {
     if (!hasLuckyDraw) {
       return (
         <>
-          <h2 style={styles.textName}>{jsonData.name}</h2>
-          <h1 style={styles.textRegister}> ลงทะเบียนสำเร็จ </h1>
+             <h2 style={styles.textName}>คุณ{jsonData.name}</h2>
+             <h2 style={styles.textRegister }>✨ลงทะเบียนสำเร็จ✨</h2>
+            <div className="gift-container-wrapper">
+              <div className="gift-container">
+                <div className="gift-lid">
+                  <img src={`${process.env.PUBLIC_URL}/images/Box-Lid.png`} alt="Gift Lid" />
+                 </div>
+                 <div className="gift-box">
+                    <img src={`${process.env.PUBLIC_URL}/images/Box.png`} alt="Gift Box" />
+                 </div>
+              </div>
+            </div>
         </>
       );
     }else{
@@ -188,6 +198,7 @@ const styles = {
     fontFamily: "'Poppins', sans-serif",
     color: '#333',
   },
+  
   headers :{
     minHeight: '10vh',
     Height: '20vh',
@@ -219,7 +230,6 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    
   },
   textRegister : {
     fontFamily : 'Inter',
@@ -239,8 +249,7 @@ const styles = {
     fontSize:'clamp(20px, 25px, 45px)',
     color: '#FFFFFF',
     textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    margin : '10px'
-
+    margin : '15px'
   },
   contentFooter : {
     fontFamily : 'Inter',
