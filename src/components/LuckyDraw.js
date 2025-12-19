@@ -174,7 +174,7 @@ const LuckyDrawPage = () => {
       {/* Header */}
       <Row style={styles.headers}>
           <h2 style={styles.title}>MITRPHOL NEW YEAR</h2>
-          <h2 style={styles.title}>2026</h2>
+          <h2 style={styles.title}>202</h2>
       </Row>
 
       {/* Content */}
@@ -196,8 +196,7 @@ const LuckyDrawPage = () => {
 const styles = {
   container: {
     minHeight: '100vh',
-    // background: 'linear-gradient(to bottom, #f7d794, #f6b93b)',
-    background : `linear-gradient(to bottom, #3CDAD7, #238B88) , url('./flower.png')`,
+    background : `linear-gradient(to bottom, #80b8ecff, #bee0eeff) , url('./flower.png')`,
     fontFamily: "'Poppins', sans-serif",
     color: '#333',
   },

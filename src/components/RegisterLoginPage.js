@@ -126,7 +126,7 @@ const RegisterPage = () => {
 };
 const style = {
   container : {
-    background : 'linear-gradient(to bottom, #44abab, #bce8e8)',
+    background : 'linear-gradient(to bottom, #80b8ecff, #bee0eeff)',
     height: '100vh'
   },
   headers :{
