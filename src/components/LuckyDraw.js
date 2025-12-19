@@ -6,6 +6,7 @@ import { Row, Col, Button, Spin } from 'antd';
 import './LuckyDraw.css'
 import './GiftBox.css'
 import GiftBox  from './GiftBox';
+
 const LuckyDrawPage = () => {
   const location = useLocation();
   const { jsonData: locationJsonData } = location.state || {};
@@ -26,7 +27,6 @@ const LuckyDrawPage = () => {
     setAPI(apiEndpoint)
   },[])
 
-
   // Initialize state from cookies
   useEffect(() => {
     if (cookies.luckyDrawData) {
@@ -40,6 +40,9 @@ const LuckyDrawPage = () => {
       setID(jsonData.gift_id)
       setHasLuckyDraw(jsonData.has_lucky_draw);
     }
+    //  Fix for everone luckydraw only event
+    setHasLuckyDraw(false)
+
   }, [cookies , jsonData]);
 
   const handleDraw = async () => {
@@ -91,7 +94,7 @@ const LuckyDrawPage = () => {
     if (!hasLuckyDraw) {
       return (
         <>
-             <h2 style={styles.textName}>คุณ{jsonData.name}</h2>
+             <h2 style={styles.textName}>คุณ {jsonData.fullname}</h2>
              <h2 style={styles.textRegister }>✨ลงทะเบียนสำเร็จ✨</h2>
             <div className="gift-container-wrapper">
               <div className="gift-container">
@@ -171,7 +174,7 @@ const LuckyDrawPage = () => {
       {/* Header */}
       <Row style={styles.headers}>
           <h2 style={styles.title}>MITRPHOL NEW YEAR</h2>
-          <h2 style={styles.title}>2025</h2>
+          <h2 style={styles.title}>2026</h2>
       </Row>
 
       {/* Content */}

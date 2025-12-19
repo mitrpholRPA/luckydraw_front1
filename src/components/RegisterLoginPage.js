@@ -72,7 +72,7 @@ const RegisterPage = () => {
     <div style={style.container}>
       <Row style={style.headers}>
           <h2 style={style.title}>MITRPHOL NEW YEAR</h2>
-          <h2 style={style.title}>2025</h2>
+          <h2 style={style.title}>2026</h2>
       </Row>
 
       <Row style={style.content}>
