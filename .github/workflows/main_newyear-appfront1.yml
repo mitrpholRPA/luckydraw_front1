@@ -58,7 +58,8 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'newyear-appfront1'
+          app-name: 'newyearapp1'
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_79E29D4AA11F4176A903F2378794FE7C }}
+
