@@ -174,7 +174,7 @@ const LuckyDrawPage = () => {
       {/* Header */}
       <Row style={styles.headers}>
           <h2 style={styles.title}>MITRPHOL NEW YEAR</h2>
-          <h2 style={styles.title}>202</h2>
+          <h2 style={styles.title}>2026</h2>
       </Row>
 
       {/* Content */}
